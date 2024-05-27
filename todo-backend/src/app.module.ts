@@ -17,21 +17,21 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.local.env'] }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get('DATABASE_HOST'),
-        port: configService.get<number>('DATABASE_PORT'),
-        username: configService.get('DATABASE_USERNAME'),
-        password: configService.get('DATABASE_PASSWORD') || "",
-        synchronize: configService.get<boolean>('DATABASE_SYNC'),
-        logging: configService.get<boolean>('DATABASE_LOGGING'),
-        database: configService.get('DATABASE_NAME'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      }),
+    ConfigModule.forRoot({ isGlobal: true, 
+      
+      envFilePath: ['.local.env'] 
+    }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'db',
+      port: 5432,
+      username: 'postgres',
+      password: 'postgres', 
+      database: 'postgres',
+      entities: [], 
+      synchronize: true,
+      autoLoadEntities: true, 
+      
     }),
     TodoModule,
     UserModule,

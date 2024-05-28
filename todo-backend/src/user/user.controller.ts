@@ -37,8 +37,8 @@ export class UserController {
   @ApiSecurity('JWT-auth')
   @Delete(':id')
   @UseGuards(new RoleGuard(Constants.ROLES.ADMIN_ROLE))
-  remove(@Param('id') id: string, @Req() req) {
+  remove(@Param('id') id:string, @Req() req) {
     console.log(req.user);
-    return this.userService.remove(+id);
+    return this.userService.remove(Number(id));
   }
 }

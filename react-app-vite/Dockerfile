@@ -29,9 +29,8 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy custom nginx.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Expose port 70
+# Expose port 4000
 EXPOSE 4000
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
-

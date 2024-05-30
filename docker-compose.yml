@@ -1,0 +1,61 @@
+
+version: '3.8'
+
+services:
+  # Backend service
+  backend:
+    build:
+      context: ./todo-backend
+      dockerfile: Dockerfile
+    container_name: nest-docker-post
+    environment:
+      - PORT=3000
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=postgres
+      - JWT_KEY=Thisisthemossddsafsadfewacewf23423fdsrtewf
+      - JWT_EXPIRE=3600 
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+    volumes:
+      - ./todo-backend/src:/app/src
+
+  # Frontend service
+  frontend:
+    container_name: react-app-vite
+    build:
+      context: ./react-app-vite
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    depends_on:
+      - backend  # Ensure frontend starts after backend
+
+  # Database service
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    container_name: postgres1
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  # pgAdmin service
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: nest-pgadmin41
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+    ports:
+      - '5050:80'
+    depends_on:
+      - db

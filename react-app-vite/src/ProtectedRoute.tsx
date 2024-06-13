@@ -1,13 +1,17 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
+import { getLoginInfo } from "./utils/LoginInfo";
 
-const ProtectedRoute = (props: any) => {
-  const token = localStorage.getItem("token");
-  if (token == undefined) {
-    return <Navigate to="/login"></Navigate>;
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+  const userInfo = getLoginInfo();
+
+  if (!userInfo) {
+    // If the user is not authenticated, redirect to the login page and preserve the current location
+    return <Navigate to="/login" state={{ from: location }} />;
   }
 
-  return props.children;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

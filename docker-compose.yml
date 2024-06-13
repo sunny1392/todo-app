@@ -1,4 +1,3 @@
-
 version: '3.8'
 
 services:
@@ -7,7 +6,7 @@ services:
     build:
       context: ./todo-backend
       dockerfile: Dockerfile
-    container_name: nest-docker-post
+    container_name: nest-docker-post1
     environment:
       - PORT=3000
       - DB_HOST=db
@@ -18,22 +17,20 @@ services:
       - JWT_KEY=Thisisthemossddsafsadfewacewf23423fdsrtewf
       - JWT_EXPIRE=3600 
     ports:
-      - '3000:3000'
+      - "3000:3000"
     depends_on:
       - db
-    volumes:
-      - ./todo-backend/src:/app/src
 
   # Frontend service
   frontend:
-    container_name: react-app-vite
     build:
       context: ./react-app-vite
       dockerfile: Dockerfile
-    ports:
-      - "4000:4000"
+    container_name: react-app-vite1
     depends_on:
-      - backend  # Ensure frontend starts after backend
+      - backend
+    ports:
+      - "80:80"
 
   # Database service
   db:
@@ -41,7 +38,7 @@ services:
     restart: always
     environment:
       - POSTGRES_PASSWORD=postgres
-    container_name: postgres1
+    container_name: postgres2
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     ports:
